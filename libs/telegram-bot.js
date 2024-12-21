@@ -196,7 +196,9 @@ async function sendMessage(message) {
   }
 }
 
+
 bot.on("polling_error", (error) => {
+
   console.error("Polling error:", error);
 });
 
