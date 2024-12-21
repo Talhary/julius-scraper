@@ -156,7 +156,7 @@ bot.on("message", async (msg) => {
         encoding: "utf-8",
       });
       ChatGpt4o(conversationId, msg.text, bot, chatId);
-
+      return;
       // return bot.sendMessage(chatId, "New user added.");
     } else {
       // Existing user
@@ -196,9 +196,7 @@ async function sendMessage(message) {
   }
 }
 
-
 bot.on("polling_error", (error) => {
-
   console.error("Polling error:", error);
 });
 
