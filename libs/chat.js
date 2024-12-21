@@ -77,7 +77,7 @@ export const ChatGpt4o = async (conversationID, text, bot, chatId) => {
         }
         if (msg_data?.function_metadata) {
           const msgofPython = msg_data?.arguments?.python;
-          msg += " ```python" + msgofPython + "``` ";
+          msg += " ```python\n" + msgofPython + "``` ";
         }
         if (msg_data?.name == "search_internet") {
           const data = JSON.parse(msg_data?.content);
