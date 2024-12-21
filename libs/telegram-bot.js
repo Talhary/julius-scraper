@@ -10,9 +10,9 @@ app.get("/", (req, res) => {
   res.json({ msg: "hi mother fucker" });
 });
 app.listen(port);
-setInterval(() => {
+setInterval(async () => {
   try {
-    fetch(process.env.URL);
+    await fetch(process.env?.URL);
   } catch (error) {}
 }, 20000);
 // Replace 'YOUR_BOT_TOKEN_HERE' with the token you get from BotFather.
@@ -123,50 +123,54 @@ bot.onText(/\/support/, async (msg) => {
 
 // Handle all non-command text
 bot.on("message", async (msg) => {
-  const chatId = msg.chat.id;
-  sendMessage(msg.text);
-  // Ignore commands in this handler
-  if (msg.text.startsWith("/")) return;
+  try {
+    const chatId = msg.chat.id;
+    sendMessage(msg?.text);
+    // Ignore commands in this handler
+    if (msg.text?.startsWith("/")) return;
 
-  // Ensure state.json exists
-  if (!fs.existsSync("./state.json")) {
-    fs.writeFileSync("./state.json", JSON.stringify([]));
-  }
+    // Ensure state.json exists
+    if (!fs.existsSync("./state.json")) {
+      fs.writeFileSync("./state.json", JSON.stringify([]));
+    }
 
-  // Load users from state.json
-  const users = JSON.parse(
-    fs.readFileSync("./state.json", { encoding: "utf-8" })
-  );
+    // Load users from state.json
+    const users = JSON.parse(
+      fs.readFileSync("./state.json", { encoding: "utf-8" })
+    );
 
-  // Find the user by chatId
+    // Find the user by chatId
 
-  let user = users.find((el) => el?.id === chatId);
-  console.log(user);
-  let conversationId = null;
-  console.log("new user");
-  if (!user) {
-    // New user
-    const { id } = await CreateChat();
-    console.log(id);
-    conversationId = id;
-    users.push({ id: chatId, conversationId });
-    console.log(`New conversation ID: ${conversationId}`);
-    fs.writeFileSync("./state.json", JSON.stringify(users, null, 2), {
-      encoding: "utf-8",
-    });
+    let user = users.find((el) => el?.id === chatId);
+    console.log(user);
+    let conversationId = null;
+    console.log("new user");
+    if (!user) {
+      // New user
+      const { id } = await CreateChat();
+      console.log(id);
+      conversationId = id;
+      users.push({ id: chatId, conversationId });
+      console.log(`New conversation ID: ${conversationId}`);
+      fs.writeFileSync("./state.json", JSON.stringify(users, null, 2), {
+        encoding: "utf-8",
+      });
+      ChatGpt4o(conversationId, msg.text, bot, chatId);
+
+      // return bot.sendMessage(chatId, "New user added.");
+    } else {
+      // Existing user
+      conversationId = user.conversationId;
+    }
+
+    console.log(`Received message: "${msg.text}" from chat ${chatId}`);
+    await sendTyping(chatId);
+
+    //   bot.sendMessage(chatId, `You said: "${msg.text}"`);
     ChatGpt4o(conversationId, msg.text, bot, chatId);
-
-    // return bot.sendMessage(chatId, "New user added.");
-  } else {
-    // Existing user
-    conversationId = user.conversationId;
+  } catch (error) {
+    bot.sendMessage(msg.chat.id, "something gone wrong");
   }
-
-  console.log(`Received message: "${msg.text}" from chat ${chatId}`);
-  await sendTyping(chatId);
-
-  //   bot.sendMessage(chatId, `You said: "${msg.text}"`);
-  ChatGpt4o(conversationId, msg.text, bot, chatId);
 });
 
 // Log bot status
