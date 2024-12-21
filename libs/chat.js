@@ -98,6 +98,7 @@ export const ChatGpt4o = async (conversationID, text, bot, chatId) => {
             bot.editMessageText(msg, {
               chat_id: chatId,
               message_id: message_id,
+              parse_mode: "Markdown",
             });
           //   console.log(msg);
         }
