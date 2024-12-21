@@ -6,7 +6,10 @@ import { ChatGpt4o } from "./chat.js";
 import express from "express";
 const port = process.env.PORT || 5000;
 const app = express();
-app.listen(port);fsd
+app.get("/", (req, res) => {
+  res.json({ msg: "hi mother fucker" });
+});
+app.listen(port);
 setInterval(() => {
   try {
     fetch(process.env.URL);
