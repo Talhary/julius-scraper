@@ -131,10 +131,11 @@ bot.on("message", async (msg) => {
   let user = users.find((el) => el?.id === chatId);
   console.log(user);
   let conversationId = null;
-
+  console.log("new user");
   if (!user) {
     // New user
     const { id } = await CreateChat();
+    console.log(id);
     conversationId = id;
     users.push({ id: chatId, conversationId });
     console.log(`New conversation ID: ${conversationId}`);
