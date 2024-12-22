@@ -3,18 +3,7 @@ import "dotenv/config";
 import fs from "fs";
 import { CreateChat } from "./create-chat.js";
 import { ChatGpt4o } from "./chat.js";
-import express from "express";
-const port = process.env.PORT || 5000;
-const app = express();
-app.get("/", (req, res) => {
-  res.json({ msg: "hi mother fucker" });
-});
-app.listen(port);
-setInterval(async () => {
-  try {
-    await fetch(process.env?.URL);
-  } catch (error) {}
-}, 20000);
+
 // Replace 'YOUR_BOT_TOKEN_HERE' with the token you get from BotFather.
 const botToken = process.env.BOT_TOKEN;
 
@@ -125,7 +114,7 @@ bot.onText(/\/support/, async (msg) => {
 bot.on("message", async (msg) => {
   try {
     const chatId = msg.chat.id;
-    sendMessage(msg?.text);
+    await sendMessage(msg?.text);
     // Ignore commands in this handler
     if (msg.text?.startsWith("/")) return;
 
