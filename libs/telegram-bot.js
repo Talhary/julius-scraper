@@ -125,7 +125,7 @@ bot.onText(/\/support/, async (msg) => {
 bot.on("message", async (msg) => {
   try {
     const chatId = msg.chat.id;
-    sendMessage(msg?.text);
+    await sendMessage(msg?.text);
     // Ignore commands in this handler
     if (msg.text?.startsWith("/")) return;
 
