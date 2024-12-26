@@ -6,12 +6,14 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
+    "build": "npm i && cd ./public npm i && npm run build npm ",
     "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "Talha",
   "license": "MIT",
   "dependencies": {
+    "@radix-ui/react-avatar": "^1.1.2",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
